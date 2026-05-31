@@ -50,49 +50,6 @@ Buka browser: **http://127.0.0.1:8000**
 | Admin (Staff) | `admin` | `admin123` | `/admin-panel/` |
 | Django Admin | `admin` | `admin123` | `/django-admin/` |
 
-> Ganti password sebelum deploy ke production.
-
----
-
-## Peta URL Lengkap
-
-### Halaman Publik
-
-| URL | Halaman | Login? |
-|-----|---------|--------|
-| `/` | Landing page — beranda utama | Tidak |
-| `/explore/` | Daftar semua event + filter | Tidak |
-| `/event/<id>/` | Detail lengkap satu event | Tidak |
-| `/event/<id>/register/` | Form pendaftaran event | **Wajib** |
-| `/event/<id>/bookmark/` | Toggle simpan / hapus bookmark | **Wajib** |
-| `/bookmarks/` | Daftar event tersimpan | **Wajib** |
-
-### Akun
-
-| URL | Halaman |
-|-----|---------|
-| `/accounts/login/` | Halaman masuk |
-| `/accounts/register/` | Daftar akun baru |
-| `/accounts/logout/` | Keluar dari akun |
-| `/accounts/profile/` | Profil pengguna |
-
-### Admin Panel Kustom (Staff Only)
-
-| URL | Halaman |
-|-----|---------|
-| `/admin-panel/` | Dashboard statistik |
-| `/admin-panel/events/` | Daftar semua event |
-| `/admin-panel/events/add/` | Tambah event baru |
-| `/admin-panel/events/<id>/edit/` | Edit event |
-| `/admin-panel/events/<id>/delete/` | Hapus event |
-| `/admin-panel/categories/` | Kelola kategori |
-| `/admin-panel/categories/add/` | Tambah kategori |
-| `/admin-panel/categories/<id>/delete/` | Hapus kategori |
-| `/admin-panel/registrations/` | Daftar semua pendaftar |
-| `/admin-panel/registrations/<id>/` | Detail satu pendaftar |
-| `/admin-panel/registrations/<id>/delete/` | Hapus data pendaftar |
-| `/django-admin/` | Django Admin bawaan (tema semi-glass) |
-
 ---
 
 ## Struktur Folder
@@ -196,59 +153,6 @@ scholarspace/
 
 ---
 
-## Model Database
-
-### Category
-| Field | Tipe | Keterangan |
-|-------|------|------------|
-| `name` | CharField | Nama kategori |
-| `slug` | SlugField (unique) | Versi URL-friendly dari nama |
-| `icon` | CharField | Emoji ikon kategori |
-| `color` | CharField | Warna hex untuk tampilan |
-
-### Event
-| Field | Tipe | Keterangan |
-|-------|------|------------|
-| `title` | CharField | Judul event |
-| `category` | ForeignKey → Category | Kategori event |
-| `organizer` | CharField | Nama penyelenggara |
-| `description` | TextField | Deskripsi lengkap |
-| `poster` | ImageField | Gambar poster (opsional) |
-| `event_date` | DateTimeField | Tanggal pelaksanaan |
-| `deadline` | DateTimeField | Batas pendaftaran |
-| `location` | CharField | Lokasi / kota |
-| `link_online` | URLField | Link website event (opsional) |
-| `event_type` | CharField | `online` / `offline` / `hybrid` |
-| `price` | CharField | Biaya pendaftaran |
-| `benefit` | TextField | Keuntungan peserta (opsional) |
-| `requirement` | TextField | Syarat peserta (opsional) |
-| `status` | CharField | `open` / `closed` / `upcoming` |
-| `is_featured` | BooleanField | Tampil di landing page jika True |
-| `created_at` | DateTimeField | Waktu data dibuat (otomatis) |
-
-### Registration
-| Field | Tipe | Keterangan |
-|-------|------|------------|
-| `event` | ForeignKey → Event | Event yang didaftarkan |
-| `name` | CharField | Nama lengkap pendaftar |
-| `npm` | CharField | Nomor pokok mahasiswa |
-| `email` | EmailField | Email aktif |
-| `phone` | CharField | Nomor HP / WhatsApp |
-| `batch_year` | CharField | Angkatan (tahun masuk) |
-| `motivation` | TextField | Alasan mendaftar |
-| `created_at` | DateTimeField | Waktu pendaftaran (otomatis) |
-
-### Bookmark
-| Field | Tipe | Keterangan |
-|-------|------|------------|
-| `user` | ForeignKey → User | Pengguna yang menyimpan |
-| `event` | ForeignKey → Event | Event yang disimpan |
-| `created_at` | DateTimeField | Waktu disimpan (otomatis) |
-
-> Kombinasi `user` + `event` dibuat unik agar tidak ada bookmark duplikat.
-
----
-
 ## Teknologi yang Digunakan
 
 | Komponen | Teknologi |
@@ -262,7 +166,5 @@ scholarspace/
 | Upload file | Django FileField + Pillow |
 | Autentikasi | Django built-in authentication |
 | Admin | Django Admin (tema kustom) + custom admin panel |
-| Bahasa | Indonesia (LANGUAGE_CODE: id-id) |
-| Timezone | Asia/Jakarta |
 
 ---
