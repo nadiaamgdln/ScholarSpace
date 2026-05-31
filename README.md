@@ -184,12 +184,3 @@ python manage.py collectstatic
 # Install: pip install psycopg2-binary
 # Update DATABASES di settings.py
 ```
-
----
-
-## Catatan Pengembangan
-
-- Password admin bawaan `admin123` — **ganti sebelum deploy**
-- File media (poster) tersimpan di folder `media/`
-- Seed data otomatis membuat 8 kategori dan 15 event nyata
-- Desain menggunakan pendekatan semi-glass / glassmorphism dengan warna biru navy
