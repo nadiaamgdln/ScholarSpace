@@ -1,0 +1,102 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block title %}Dashboard — ScholarSpace Admin{% endblock %}
+{% block admin_content %}
+
+<div class="admin-page-header">
+  <div class="admin-page-header-left">
+    <div class="admin-page-header-title">Dashboard</div>
+    <div class="admin-page-header-sub">Ringkasan aktivitas platform ScholarSpace</div>
+  </div>
+  <div class="admin-page-header-right">
+    <a href="{% url 'admin_event_add' %}" class="btn btn-primary">Tambah Event</a>
+  </div>
+</div>
+
+<div class="stats-grid">
+  <div class="glass-card stat-card">
+    <div class="stat-glow"></div>
+    <div class="stat-icon" style="background:rgba(22,72,200,.10);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" width="20" height="20"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    </div>
+    <div class="stat-num">{{ total_events }}</div>
+    <div class="stat-label">Total Event</div>
+  </div>
+  <div class="glass-card stat-card">
+    <div class="stat-glow" style="background:radial-gradient(circle,rgba(4,120,87,.12),transparent 70%);"></div>
+    <div class="stat-icon" style="background:rgba(4,120,87,.10);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--green)" stroke-width="2" width="20" height="20"><circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/></svg>
+    </div>
+    <div class="stat-num">{{ open_events }}</div>
+    <div class="stat-label">Event Aktif</div>
+  </div>
+  <div class="glass-card stat-card">
+    <div class="stat-glow" style="background:radial-gradient(circle,rgba(12,180,232,.12),transparent 70%);"></div>
+    <div class="stat-icon" style="background:rgba(12,180,232,.10);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" stroke-width="2" width="20" height="20"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+    </div>
+    <div class="stat-num">{{ total_registrations }}</div>
+    <div class="stat-label">Total Pendaftar</div>
+  </div>
+  <div class="glass-card stat-card">
+    <div class="stat-glow" style="background:radial-gradient(circle,rgba(109,40,217,.10),transparent 70%);"></div>
+    <div class="stat-icon" style="background:rgba(109,40,217,.10);">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-violet)" stroke-width="2" width="20" height="20"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+    </div>
+    <div class="stat-num">{{ total_categories }}</div>
+    <div class="stat-label">Kategori</div>
+  </div>
+</div>
+
+<div class="grid-2">
+  <div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <h3 style="font-size:1rem;font-weight:700;">Event Terbaru</h3>
+      <a href="{% url 'admin_event_list' %}" class="btn btn-ghost btn-sm">Lihat Semua</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Event</th><th>Status</th><th>Aksi</th></tr></thead>
+        <tbody>
+          {% for ev in recent_events %}
+          <tr>
+            <td>
+              <div style="font-weight:600;font-size:.85rem;">{{ ev.title|truncatechars:45 }}</div>
+              <div style="font-size:.72rem;color:var(--text-muted);">{{ ev.created_at|date:"d M Y" }}</div>
+            </td>
+            <td><span class="badge badge-{{ ev.status }}">{{ ev.get_status_display }}</span></td>
+            <td><a href="{% url 'admin_event_edit' ev.pk %}" class="btn btn-secondary btn-sm">Edit</a></td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:2rem;">Belum ada event</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;">
+      <h3 style="font-size:1rem;font-weight:700;">Pendaftar Terbaru</h3>
+      <a href="{% url 'admin_registration_list' %}" class="btn btn-ghost btn-sm">Lihat Semua</a>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>Nama</th><th>Event</th><th>NPM</th></tr></thead>
+        <tbody>
+          {% for reg in recent_regs %}
+          <tr>
+            <td style="font-weight:600;font-size:.85rem;">
+              <a href="{% url 'admin_registration_detail' reg.pk %}" style="color:var(--brand-blue);text-decoration:none;">{{ reg.name }}</a>
+            </td>
+            <td style="font-size:.78rem;color:var(--text-muted);">{{ reg.event.title|truncatechars:28 }}</td>
+            <td style="font-size:.78rem;color:var(--text-muted);">{{ reg.npm }}</td>
+          </tr>
+          {% empty %}
+          <tr><td colspan="3" style="text-align:center;color:var(--text-muted);padding:2rem;">Belum ada pendaftar</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

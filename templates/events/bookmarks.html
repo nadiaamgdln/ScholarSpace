@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Tersimpan — ScholarSpace{% endblock %}
+{% block content %}
+<div class="page-header"><div class="page-header-inner"><h1 class="page-header-title">Event Tersimpan</h1><p class="page-header-sub">Event yang kamu simpan</p></div></div>
+<section class="section"><div class="container">
+  {% if bookmarks %}
+  <div class="events-grid">{% for bm in bookmarks %}{% with event=bm.event %}{% include 'events/_card.html' %}{% endwith %}{% endfor %}</div>
+  {% else %}
+  <div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="52" height="52"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div><div class="empty-title">Belum ada tersimpan</div><div class="empty-desc">Simpan event menarik dengan klik ikon bookmark</div><a href="{% url 'explore' %}" class="btn btn-primary" style="margin-top:1.25rem;">Explore Events</a></div>
+  {% endif %}
+</div></section>
+{% endblock %}

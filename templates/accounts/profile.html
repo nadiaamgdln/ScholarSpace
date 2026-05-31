@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Profil — ScholarSpace{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container" style="max-width:800px;">
+    <div class="glass-card" style="padding:2rem;margin-bottom:1.5rem;">
+      <div style="display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;">
+        <div style="width:68px;height:68px;background:var(--brand-grad);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 6px 20px rgba(26,86,219,.28);">{{ user.username.0|upper }}</div>
+        <div><h2 style="font-size:1.4rem;margin-bottom:.2rem;">{{ user.username }}</h2><p style="color:var(--text-muted);font-size:.85rem;">Bergabung sejak {{ user.date_joined|date:"d M Y" }}</p>{% if user.is_staff %}<span class="badge badge-cat" style="margin-top:.5rem;">Admin</span>{% endif %}</div>
+        <div style="margin-left:auto;"><a href="{% url 'logout' %}" class="btn btn-danger">Keluar</a></div>
+      </div>
+    </div>
+    <h3 style="font-family:var(--font-display);font-weight:700;margin-bottom:1rem;">Event Tersimpan</h3>
+    {% if bookmarks %}
+    <div class="events-grid" style="grid-template-columns:1fr 1fr;">{% for bm in bookmarks %}{% with event=bm.event %}{% include 'events/_card.html' %}{% endwith %}{% endfor %}</div>
+    <a href="{% url 'my_bookmarks' %}" class="btn btn-secondary" style="margin-top:1rem;">Lihat Semua</a>
+    {% else %}
+    <div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="52" height="52"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></div><div class="empty-title">Belum ada tersimpan</div><a href="{% url 'explore' %}" class="btn btn-primary" style="margin-top:1rem;">Explore Events</a></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

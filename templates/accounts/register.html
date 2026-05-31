@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Daftar — ScholarSpace{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card" style="max-width:460px;">
+    <div class="auth-logo"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="26" height="26"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+    <h1 class="auth-title">Buat Akun</h1>
+    <p class="auth-sub">Bergabung dan mulai temukan peluangmu</p>
+    <form method="post">
+      {% csrf_token %}
+      <div class="form-group"><label class="form-label">Username</label><input type="text" name="username" class="input-field" required placeholder="Username unik">{% for e in form.username.errors %}<div class="form-hint error">{{ e }}</div>{% endfor %}</div>
+      <div class="form-group"><label class="form-label">Password</label><input type="password" name="password1" class="input-field" required placeholder="Password kuat">{% for e in form.password1.errors %}<div class="form-hint error">{{ e }}</div>{% endfor %}</div>
+      <div class="form-group"><label class="form-label">Konfirmasi Password</label><input type="password" name="password2" class="input-field" required placeholder="Ulangi password">{% for e in form.password2.errors %}<div class="form-hint error">{{ e }}</div>{% endfor %}</div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:.75rem;margin-top:.5rem;">Buat Akun</button>
+    </form>
+    <div class="auth-footer">Sudah punya akun? <a href="{% url 'login' %}">Masuk di sini</a></div>
+  </div>
+</div>
+{% endblock %}

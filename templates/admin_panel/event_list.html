@@ -1,0 +1,59 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block title %}Kelola Event — ScholarSpace Admin{% endblock %}
+{% block admin_content %}
+
+<div class="admin-page-header">
+  <div class="admin-page-header-left">
+    <div class="admin-page-header-title">Kelola Event</div>
+    <div class="admin-page-header-sub">{{ events|length }} event terdaftar di platform</div>
+  </div>
+  <div class="admin-page-header-right">
+    <a href="{% url 'admin_event_add' %}" class="btn btn-primary">Tambah Event Baru</a>
+  </div>
+</div>
+
+<div class="table-wrap">
+  <table>
+    <thead>
+      <tr><th></th><th>Event</th><th>Kategori</th><th>Status</th><th>Tipe</th><th>Deadline</th><th>Pendaftar</th><th>Aksi</th></tr>
+    </thead>
+    <tbody>
+      {% for ev in events %}
+      <tr>
+        <td style="width:52px;">
+          {% if ev.poster %}
+          <img src="{{ ev.poster.url }}" style="width:44px;height:30px;object-fit:cover;border-radius:6px;">
+          {% else %}
+          <div style="width:44px;height:30px;background:rgba(22,72,200,.08);border-radius:6px;display:flex;align-items:center;justify-content:center;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="1.5" width="14" height="14"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          {% endif %}
+        </td>
+        <td>
+          <div style="font-weight:600;font-size:.875rem;max-width:220px;">{{ ev.title|truncatechars:48 }}</div>
+          <div style="font-size:.72rem;color:var(--text-muted);">{{ ev.organizer }}</div>
+        </td>
+        <td>{% if ev.category %}<span class="badge badge-cat">{{ ev.category.name }}</span>{% else %}<span style="color:var(--text-light);">—</span>{% endif %}</td>
+        <td><span class="badge badge-{{ ev.status }}">{{ ev.get_status_display }}</span></td>
+        <td><span class="badge badge-{{ ev.event_type }}">{{ ev.get_event_type_display }}</span></td>
+        <td style="font-size:.8rem;color:var(--text-muted);">{{ ev.deadline|date:"d M Y" }}</td>
+        <td style="font-weight:700;font-size:.9rem;color:var(--brand-blue);">{{ ev.reg_count }}</td>
+        <td>
+          <div class="td-actions">
+            <a href="{% url 'event_detail' ev.pk %}" class="btn btn-ghost btn-sm">Lihat</a>
+            <a href="{% url 'admin_event_edit' ev.pk %}" class="btn btn-secondary btn-sm">Edit</a>
+            <form method="post" action="{% url 'admin_event_delete' ev.pk %}" style="display:inline;" onsubmit="return confirm('Hapus event ini?')">
+              {% csrf_token %}<button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+            </form>
+          </div>
+        </td>
+      </tr>
+      {% empty %}
+      <tr><td colspan="8" style="text-align:center;padding:3rem;color:var(--text-muted);">
+        Belum ada event. <a href="{% url 'admin_event_add' %}" style="color:var(--brand-blue);font-weight:600;">Tambah sekarang</a>.
+      </td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

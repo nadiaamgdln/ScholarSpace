@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Daftar {{ event.title }} — ScholarSpace{% endblock %}
+{% block content %}
+<section class="section">
+  <div class="container">
+    <div style="max-width:680px;margin:0 auto;">
+      <a href="{% url 'event_detail' event.pk %}" class="btn btn-ghost btn-sm" style="margin-bottom:1.5rem;">&larr; Kembali ke detail</a>
+      <div class="form-wrapper">
+        <div class="glass-card" style="padding:.875rem 1rem;display:flex;align-items:center;gap:.75rem;margin-bottom:1.75rem;border-radius:var(--r-md);">
+          <div style="width:42px;height:42px;background:rgba(26,86,219,.09);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" width="18" height="18"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <div><div style="font-weight:700;font-size:.875rem;color:var(--text-dark);">{{ event.title }}</div><div style="font-size:.75rem;color:var(--text-muted);">{{ event.organizer }} &bull; Deadline {{ event.deadline|date:"d M Y" }}</div></div>
+        </div>
+        <h2 class="form-title">Form Pendaftaran</h2>
+        <p class="form-sub">Isi data dengan lengkap dan benar</p>
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Nama Lengkap *</label><input type="text" name="name" class="input-field" required placeholder="Nama sesuai KTP"></div>
+            <div class="form-group"><label class="form-label">NPM *</label><input type="text" name="npm" class="input-field" required placeholder="2108107010001"></div>
+          </div>
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">Email Aktif *</label><input type="email" name="email" class="input-field" required placeholder="nama@example.com"></div>
+            <div class="form-group"><label class="form-label">Nomor HP *</label><input type="text" name="phone" class="input-field" required placeholder="08xxxxxxxxxx"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Angkatan *</label>
+            <select name="batch_year" class="input-field" required>
+              <option value="">Pilih angkatan</option>
+              <option value="2025">2025</option><option value="2024">2024</option><option value="2023">2023</option><option value="2022">2022</option><option value="2021">2021</option><option value="2020">2020</option>
+            </select>
+          </div>
+          <div class="form-group"><label class="form-label">Motivasi *</label><textarea name="motivation" class="input-field" required placeholder="Ceritakan alasanmu mengikuti event ini..."></textarea></div>
+          <div style="display:flex;gap:.75rem;margin-top:1.5rem;">
+            <button type="submit" class="btn btn-primary btn-lg" style="flex:1;justify-content:center;">Kirim Pendaftaran</button>
+            <a href="{% url 'event_detail' event.pk %}" class="btn btn-outline btn-lg">Batal</a>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

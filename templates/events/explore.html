@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+{% block title %}Explore Events — ScholarSpace{% endblock %}
+{% block content %}
+<div class="page-header">
+  <div class="page-header-inner">
+    <h1 class="page-header-title">Explore Events</h1>
+    <p class="page-header-sub">Semua event, lomba, beasiswa, dan peluang teknologi</p>
+  </div>
+</div>
+<section class="section">
+  <div class="container">
+    <form method="get" class="filter-bar">
+      <div class="filter-group" style="flex:2;min-width:200px;">
+        <label class="filter-label">Cari</label>
+        <input type="text" name="q" value="{{ q }}" placeholder="Nama event atau penyelenggara..." class="input-field">
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Kategori</label>
+        <select name="category" class="input-field">
+          <option value="">Semua Kategori</option>
+          {% for cat in categories %}<option value="{{ cat.slug }}" {% if cat.slug == category_slug %}selected{% endif %}>{{ cat.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Status</label>
+        <select name="status" class="input-field">
+          <option value="">Semua Status</option>
+          <option value="open" {% if status_filter == 'open' %}selected{% endif %}>Buka</option>
+          <option value="closed" {% if status_filter == 'closed' %}selected{% endif %}>Tutup</option>
+          <option value="upcoming" {% if status_filter == 'upcoming' %}selected{% endif %}>Segera</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label class="filter-label">Tipe</label>
+        <select name="type" class="input-field">
+          <option value="">Semua Tipe</option>
+          <option value="online" {% if type_filter == 'online' %}selected{% endif %}>Online</option>
+          <option value="offline" {% if type_filter == 'offline' %}selected{% endif %}>Offline</option>
+          <option value="hybrid" {% if type_filter == 'hybrid' %}selected{% endif %}>Hybrid</option>
+        </select>
+      </div>
+      <div class="filter-group" style="min-width:auto;justify-content:flex-end;">
+        <label class="filter-label" style="visibility:hidden;">x</label>
+        <div style="display:flex;gap:.5rem;">
+          <button type="submit" class="btn btn-primary">Filter</button>
+          <a href="{% url 'explore' %}" class="btn btn-outline">Reset</a>
+        </div>
+      </div>
+    </form>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;">
+      <p style="font-size:.85rem;color:var(--text-muted);">Menampilkan <strong style="color:var(--text-dark);">{{ events|length }}</strong> event{% if q %} untuk "{{ q }}"{% endif %}</p>
+    </div>
+    {% if events %}
+    <div class="events-grid">{% for event in events %}{% include 'events/_card.html' %}{% endfor %}</div>
+    {% else %}
+    <div class="empty-state"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="52" height="52"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="empty-title">Tidak ada event ditemukan</div><div class="empty-desc">Coba ubah filter atau kata kunci pencarianmu</div><a href="{% url 'explore' %}" class="btn btn-primary" style="margin-top:1.25rem;">Reset Filter</a></div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

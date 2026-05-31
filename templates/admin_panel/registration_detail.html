@@ -1,0 +1,80 @@
+{% extends 'admin_panel/base_admin.html' %}
+{% block title %}Detail Pendaftar — {{ reg.name }}{% endblock %}
+{% block admin_content %}
+
+<div class="admin-page-header">
+  <div class="admin-page-header-left">
+    <div class="admin-page-header-title">Detail Pendaftar</div>
+    <div class="admin-page-header-sub">Data lengkap pendaftar untuk event {{ reg.event.title|truncatechars:50 }}</div>
+  </div>
+  <div class="admin-page-header-right" style="display:flex;gap:.75rem;">
+    <a href="{% url 'admin_registration_list' %}" class="btn btn-outline">Kembali</a>
+    <form method="post" action="{% url 'admin_registration_delete' reg.pk %}" onsubmit="return confirm('Hapus data pendaftar ini?')">
+      {% csrf_token %}<button type="submit" class="btn btn-danger">Hapus Data</button>
+    </form>
+  </div>
+</div>
+
+<!-- Identitas pendaftar -->
+<div class="glass-card" style="padding:1.5rem;margin-bottom:1.5rem;">
+  <div style="display:flex;align-items:center;gap:1.25rem;margin-bottom:1.5rem;">
+    <div style="width:56px;height:56px;background:var(--brand-grad);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 4px 14px rgba(22,72,200,.30);">
+      {{ reg.name.0|upper }}
+    </div>
+    <div>
+      <div style="font-family:var(--font-display);font-size:1.25rem;font-weight:800;color:var(--text-dark);">{{ reg.name }}</div>
+      <div style="font-size:.82rem;color:var(--text-muted);margin-top:.2rem;">Mendaftar pada {{ reg.created_at|date:"d M Y, H:i" }}</div>
+    </div>
+    <span class="badge badge-open" style="margin-left:auto;">Terdaftar</span>
+  </div>
+
+  <div class="reg-detail-grid">
+    <div class="reg-detail-item">
+      <div class="reg-detail-label">NPM</div>
+      <div class="reg-detail-val">{{ reg.npm }}</div>
+    </div>
+    <div class="reg-detail-item">
+      <div class="reg-detail-label">Angkatan</div>
+      <div class="reg-detail-val">{{ reg.batch_year }}</div>
+    </div>
+    <div class="reg-detail-item">
+      <div class="reg-detail-label">Email</div>
+      <div class="reg-detail-val">
+        <a href="mailto:{{ reg.email }}" style="color:var(--brand-blue);">{{ reg.email }}</a>
+      </div>
+    </div>
+    <div class="reg-detail-item">
+      <div class="reg-detail-label">Nomor HP</div>
+      <div class="reg-detail-val">
+        <a href="https://wa.me/{{ reg.phone }}" target="_blank" style="color:var(--green);">{{ reg.phone }}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Event yang didaftarkan -->
+<div class="glass-card" style="padding:1.5rem;margin-bottom:1.5rem;">
+  <div style="font-size:.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1rem;">Event yang Didaftarkan</div>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <div style="width:46px;height:46px;background:rgba(22,72,200,.09);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand-blue)" stroke-width="2" width="20" height="20"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+    </div>
+    <div style="flex:1;">
+      <div style="font-weight:700;font-size:.95rem;color:var(--text-dark);margin-bottom:.2rem;">{{ reg.event.title }}</div>
+      <div style="font-size:.78rem;color:var(--text-muted);">{{ reg.event.organizer }} &bull; {{ reg.event.deadline|date:"d M Y" }}</div>
+    </div>
+    <div style="display:flex;gap:.5rem;flex-shrink:0;">
+      <span class="badge badge-{{ reg.event.status }}">{{ reg.event.get_status_display }}</span>
+      <a href="{% url 'event_detail' reg.event.pk %}" class="btn btn-secondary btn-sm" target="_blank">Lihat Event</a>
+    </div>
+  </div>
+</div>
+
+<!-- Motivasi -->
+{% if reg.motivation %}
+<div class="reg-motivation-block">
+  <div class="reg-motivation-label">Motivasi Mendaftar</div>
+  <div class="reg-motivation-text">{{ reg.motivation }}</div>
+</div>
+{% endif %}
+{% endblock %}
